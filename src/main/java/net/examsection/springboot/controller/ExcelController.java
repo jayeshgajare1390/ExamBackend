@@ -109,5 +109,21 @@ public class ExcelController {
         List<ExamSection> examSection = productService.getstudent(id);
         return ResponseEntity.ok(examSection);
     }
-
-}
+    @GetMapping("/main")
+    public List<BlocksAndStrengths> mainbuilding() {
+        return this.productService.mainbuilding();
+    }@GetMapping("/new")
+    public List<BlocksAndStrengths> newbuilding() {
+        return this.productService.newbuilding();
+    }
+    @PostMapping("/strength")
+    public String processStrengthData(
+    		@RequestParam("blocks") Integer[] blocks,
+    	    @RequestParam("strengths") Integer[] strengths,
+    	    @RequestParam("buildings") String[] buildings,
+    	    @RequestParam("totalCount") int totalCount
+        ) {
+    	System.out.println(blocks[0]);
+    	
+            return this.productService.setStrengths(blocks,strengths,buildings,totalCount);
+}}

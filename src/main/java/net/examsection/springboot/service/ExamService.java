@@ -1,5 +1,8 @@
 package net.examsection.springboot.service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import net.examsection.springboot.helper.helper;
@@ -68,10 +71,8 @@ public class ExamService {
 		this.productRepo.deleteById(id);
 		return "Deleted";
 	}
-	@Autowired
-    public ExamService(ExamRepository productRepo) {
-        this.productRepo = productRepo;
-    }
+	
+   
 	public List<ExamSection> findByprogramname1(){
 		int infoid =this.InfoRepo.getlastentry();
 		int allStudents = this.productRepo.counter(infoid); // Fetch all students
@@ -129,5 +130,109 @@ public class ExamService {
 	public List<ExamSection> getstudent(int request) {
 		
 		return this.productRepo.findByInfoTableId((long)request);
-	}   
+	}
+	public List<BlocksAndStrengths> mainbuilding() {
+		// TODO Auto-generated method stub
+		return this.StrengthRepo.mainbuilding();
+	}
+	public List<BlocksAndStrengths> newbuilding() {
+		// TODO Auto-generated method stub
+		return this.StrengthRepo.newbuilding();
+	}
+	public void addBlockStrength(int totalCount, List<BlocksAndStrengths> selectedData) {
+	    List<ExamSection> abc = productRepo.getallrecent(totalCount);
+	    
+	    for (BlocksAndStrengths ab : selectedData) {
+	        int strength = ab.getStrengths();
+	        int blockno = ab.getBlocks();
+	        int counter = 0;
+
+	        for (ExamSection ab1 : abc) {
+	            if (counter < strength) {
+	                ab1.setBlock_no(blockno);
+	                counter++;
+	            } else {
+	                // Reset counter and move to the next strength if available
+	                counter = 0;
+	                strength = getNextStrength(selectedData, strength);
+	                if (strength == 0) {
+	                    // If no more strengths are available, exit the loop
+	                    break;
+	                }
+	                blockno = getBlockForNextStrength(selectedData, strength);
+	            }
+	        }
+	    }
+	}
+
+	// Helper method to get the next strength from selectedData
+	private int getNextStrength(List<BlocksAndStrengths> selectedData, int currentStrength) {
+	    int nextStrength = 0;
+	    for (BlocksAndStrengths data : selectedData) {
+	        if (data.getStrengths() > currentStrength) {
+	            nextStrength = data.getStrengths();
+	            break;
+	        }
+	    }
+	    return nextStrength;
+	}
+
+	// Helper method to get the block number for the next strength
+	private int getBlockForNextStrength(List<BlocksAndStrengths> selectedData, int nextStrength) {
+	    for (BlocksAndStrengths data : selectedData) {
+	        if (data.getStrengths() == nextStrength) {
+	            return data.getBlocks();
+	        }
+	    }
+	    return 0; // Return a default block number if not found
+	}
+	 private final SessionFactory sessionFactory; // Assuming you have a properly configured Hibernate SessionFactory
+	 @Autowired
+	    public ExamService(SessionFactory sessionFactory,ExamRepository productRepo) {
+	        this.sessionFactory = sessionFactory;
+	        this.productRepo = productRepo;
+	    }
+	public String setStrengths(Integer[] blocks, Integer[] strengths, String[] buildings, int totalCount) {
+        // Open a Hibernate session and start a transaction
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            List<ExamSection> abc = productRepo.getallrecent(totalCount);
+            System.out.println(abc.size());
+
+            int count1 = 0, counter = 0, i = 0;
+
+            for (ExamSection ab1 : abc) {
+                if (i >= strengths.length || i >= blocks.length) {
+                    break;
+                }
+
+                ab1.setBlock_no(blocks[i]);
+                ab1.setStrength(strengths[i]);
+                ab1.setBuilding(buildings[i]);
+                // Mark the entity as dirty or modified
+                session.update(ab1);
+
+                counter++;
+
+                if (counter >= strengths[i]) {
+                    i++;
+                    counter = 0;
+                }
+
+                count1++;
+
+                if (count1 >= totalCount) {
+                    break;
+                }
+            }
+
+            // Commit the transaction to persist changes to the database
+            transaction.commit();
+        }
+
+        return "Changes have been persisted to the database.";
+    }
+
+  
 }

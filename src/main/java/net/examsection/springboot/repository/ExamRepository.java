@@ -21,4 +21,6 @@ public interface ExamRepository extends JpaRepository<ExamSection, Long> {
 	 List<ExamSection> getExamInfoWithInnerJoinByInfoTableId(int infoTableId);
 	 @Query(value="SELECT count(info_table_id) from studentdataexam where info_table_id=?1" , nativeQuery=true)
 	 int counter(int infoid);
+	 @Query(value="SELECT * FROM examsection.studentdataexam order by id desc limit ?1" , nativeQuery=true)
+	List<ExamSection> getallrecent(int totalCount);
  }

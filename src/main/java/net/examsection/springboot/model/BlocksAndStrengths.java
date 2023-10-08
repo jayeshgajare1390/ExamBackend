@@ -16,6 +16,8 @@ public class BlocksAndStrengths {
 	private int blocks;
 	@Column(name="strengths")
 	private int strengths;
+	@Column(name="Building")
+	private String Building;
 	
 	public BlocksAndStrengths() {
 		
@@ -42,6 +44,14 @@ public class BlocksAndStrengths {
 
 	public void setStrengths(int strengths) {
 		this.strengths = strengths;
+	}
+
+	public String getBuilding() {
+		return Building;
+	}
+
+	public void setBuilding(String building) {
+		Building = building;
 	}
 	
 		

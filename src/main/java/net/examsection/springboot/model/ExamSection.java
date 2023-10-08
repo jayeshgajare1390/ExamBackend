@@ -24,6 +24,23 @@ public class ExamSection {
 	private Integer infoTableId;
 	@Column(name="block_no")
 	private Integer block_no;
+	@Column(name="strength")
+	private Integer strength;
+	@Column(name="building")
+	private String building;
+	
+	public String getBuilding() {
+		return building;
+	}
+	public void setBuilding(String building) {
+		this.building = building;
+	}
+	public Integer getStrength() {
+		return strength;
+	}
+	public void setStrength(Integer strength) {
+		this.strength = strength;
+	}
 	public ExamSection()
 	{}
 	public ExamSection(long id, Double prn, String studentname, String programname, Integer infoTableId,
