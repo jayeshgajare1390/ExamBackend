@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 
+import net.examsection.springboot.model.AbsentStudent;
 import net.examsection.springboot.model.ExamSection;
 //MyDataRepository.java
 public interface ExamRepository extends JpaRepository<ExamSection, Long> {
@@ -23,4 +24,7 @@ public interface ExamRepository extends JpaRepository<ExamSection, Long> {
 	 int counter(int infoid);
 	 @Query(value="SELECT * FROM examsection.studentdataexam order by id desc limit ?1" , nativeQuery=true)
 	List<ExamSection> getallrecent(int totalCount);
+	 @Query(value = "SELECT * FROM absent_student " +
+	            "WHERE date = ?1 AND block_no = ?2", nativeQuery = true)
+	    List<AbsentStudent> findByDateAndBlockNo(String date, Integer blockNumber);
  }

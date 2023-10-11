@@ -5,10 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import net.examsection.springboot.helper.helper;
+import net.examsection.springboot.model.AbsentStudent;
 import net.examsection.springboot.model.BlocksAndStrengths;
 import net.examsection.springboot.model.ExamSection;
 import net.examsection.springboot.model.InfoTable;
+import net.examsection.springboot.repository.ExamRepository;
 import net.examsection.springboot.service.ExamService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,7 +22,13 @@ public class ExcelController {
 
     @Autowired
     private ExamService productService;
-
+    private ExamRepository productRepo;
+//    @GetMapping("/blocks")
+//    public List<AbsentStudent> getStudentsByDateAndBlock(
+//            @RequestParam("selectedDate") String selectedDate,
+//            @RequestParam("blockNumber") Integer blockNumber) {
+//        return productRepo.findByDateAndBlockNo(selectedDate, blockNumber);
+//    }
     @PostMapping("/studentdataexam/upload")
     public ResponseEntity<?> upload(
             @RequestParam("File") MultipartFile file, //6
