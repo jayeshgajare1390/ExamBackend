@@ -24,31 +24,25 @@ public class InfoTable {
     @Column(name = "year")
     private String year;
 
-    public int getPrev() {
-		return prev;
-	}
-	public void setPrev(int prev) {
-		this.prev = prev;
-	}
+  
 	@Column(name = "subject")
     private String subject;
 
     @Column(name = "slot")
     private String startTime;
-    @Column(name = "prev")
-    private int prev;
+   
     @Column(name = "course")
     private String course;
     public InfoTable() {
 
     }
 	public InfoTable(int id, String option, String date, String year, String subject,
-			String startTime, String course,int prev) {
+			String startTime, String course) {
 		super();
 		this.id = id;
 		this.option = option;
 		this.date = date;
-		this.prev = prev;
+	
 		this.year = year;
 		this.subject = subject;
 		this.startTime = startTime;

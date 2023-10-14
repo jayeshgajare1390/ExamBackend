@@ -16,7 +16,17 @@ public class BlocksAndStrengths {
 	private int blocks;
 	@Column(name="strengths")
 	private int strengths;
+	@Column(name="Building")
+	private String Building;
 	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public BlocksAndStrengths() {
 		
 	}
@@ -42,6 +52,14 @@ public class BlocksAndStrengths {
 
 	public void setStrengths(int strengths) {
 		this.strengths = strengths;
+	}
+
+	public String getBuilding() {
+		return Building;
+	}
+
+	public void setBuilding(String building) {
+		Building = building;
 	}
 	
 		
