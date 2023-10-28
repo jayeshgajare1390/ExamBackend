@@ -11,4 +11,6 @@ public interface StrngthRepository extends JpaRepository<BlocksAndStrengths, Int
 	@Query(value="SELECT * FROM examsection.strengths_table where building=\"New Building\";", nativeQuery=true)
 	List<BlocksAndStrengths> newbuilding();
 
+	@Query("SELECT b.blocks FROM BlocksAndStrengths b")
+	List<Integer> findAllBlocks();
 }

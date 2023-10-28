@@ -33,20 +33,31 @@ public class InfoTable {
    
     @Column(name = "course")
     private String course;
+    
+    @Column(name = "CourseCode")
+    private String CourseCode;
+    
     public InfoTable() {
 
     }
 	public InfoTable(int id, String option, String date, String year, String subject,
-			String startTime, String course) {
+			String startTime, String course, String CourseCode) {
 		super();
 		this.id = id;
 		this.option = option;
 		this.date = date;
-	
+		this.CourseCode=CourseCode;
 		this.year = year;
 		this.subject = subject;
 		this.startTime = startTime;
 		this.course = course;
+	}
+	
+	public String getCourseCode() {
+		return CourseCode;
+	}
+	public void setCourseCode(String courseCode) {
+		CourseCode = courseCode;
 	}
 	public int getId() {
 		return id;

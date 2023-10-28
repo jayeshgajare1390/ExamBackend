@@ -13,4 +13,8 @@ public interface InfoRepository extends JpaRepository<InfoTable, Integer> {
 	 int getlastentry();
 	 @Query(value="SELECT * from info_table order by id desc", nativeQuery=true)
 	List<InfoTable> findAlldesc();
+
+	// New method to search data within a date range
+	@Query(value = "SELECT date, slot FROM info_table WHERE date >= ?1 AND date <= ?2", nativeQuery = true)
+	List<Object[]> findInfoByDateRange(String startDate, String endDate);
 }
