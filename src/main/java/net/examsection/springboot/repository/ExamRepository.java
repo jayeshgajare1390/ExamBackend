@@ -12,9 +12,15 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 
 import net.examsection.springboot.model.AbsentStudent;
 import net.examsection.springboot.model.ExamSection;
+import net.examsection.springboot.model.User;
 //MyDataRepository.java
 public interface ExamRepository extends JpaRepository<ExamSection, Long> {
 	//ExamSection saveAll(ExamSection products);
+	
+	@Query("SELECT es, it FROM ExamSection es JOIN InfoTable it ON es.infoTableId = it.id WHERE es.block_no = ?1")
+	public List<Object[]> findBlockByPRN(long blockNo);
+
+	
 	@Query("SELECT e FROM ExamSection e WHERE e.programname = ?1 AND e.infoTableId = ?2")
     List<ExamSection> findByProgramNameAndInfoTableId(String branch, int infoid);
 	List<ExamSection> findByInfoTableId(long InfoTableId);
@@ -27,4 +33,5 @@ public interface ExamRepository extends JpaRepository<ExamSection, Long> {
 	 @Query(value = "SELECT * FROM absent_student " +
 	            "WHERE date = ?1 AND block_no = ?2", nativeQuery = true)
 	    List<AbsentStudent> findByDateAndBlockNo(String date, Integer blockNumber);
- }
+	 
+}

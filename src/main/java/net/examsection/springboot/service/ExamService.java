@@ -233,6 +233,31 @@ public class ExamService {
 
         return "Changes have been persisted to the database.";
     }
+	public void updateData(List<BlocksAndStrengths> data) {
+	    // First, delete all existing entries
+	    this.StrengthRepo.deleteAll();
+
+	    // Then, save each item individually
+	    for (BlocksAndStrengths item : data) {
+	        this.StrengthRepo.save(item);
+	    }
+	}
+	public void updateData(int[] strengthArray, int[] blockArray) {
+		// TODO Auto-generated method stub
+		this.StrengthRepo.deleteAll();
+		 for (int i = 0; i < strengthArray.length; i++) {
+	            int strength = strengthArray[i];
+	            int block = blockArray[i];
+
+	            // Create a new entity and save it to the database
+	            BlocksAndStrengths entity = new BlocksAndStrengths();
+	            entity.setStrengths(strength);
+	            entity.setBlocks(block);
+
+	            StrengthRepo.save(entity);
+	        }
+	}
+
 
   
 }

@@ -15,7 +15,7 @@ import net.examsection.springboot.model.InfoTable;
 public interface InfoRepository extends JpaRepository<InfoTable, Integer> {
 	 @Query(value="SELECT * FROM info_table where id=?1" , nativeQuery=true)
 	 Optional<List<InfoTable>> findInfo(long InfoTableId);
-	 @Query(value="SELECT e.block_no,e.prn,e.studentname,i.course,i.date,i.endtime,i.optionvalue,i.starttime,i.subject,i.year FROM studentdataexam e INNER JOIN info_table i ON e.info_table_id = i.id" ,nativeQuery=true)
+	 @Query(value="SELECT e.block_no,e.prn,e.studentname,i.course,i.date,i.optionvalue,i.slot,i.subject,i.year FROM studentdataexam e INNER JOIN info_table i ON e.info_table_id = i.id" ,nativeQuery=true)
 	 List<Object[]> innerJoinQuery();
 	 @Query(value="SELECT id from info_table order by id desc limit 1", nativeQuery=true)
 	 int getlastentry();

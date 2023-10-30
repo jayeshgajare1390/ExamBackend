@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import net.examsection.springboot.helper.helper;
-import net.examsection.springboot.model.AbsentStudent;
 import net.examsection.springboot.model.BlocksAndStrengths;
 import net.examsection.springboot.model.ExamSection;
 import net.examsection.springboot.model.InfoTable;
+import net.examsection.springboot.model.User;
 import net.examsection.springboot.repository.ExamRepository;
 import net.examsection.springboot.service.ExamService;
 
@@ -22,13 +22,19 @@ public class ExcelController {
 
     @Autowired
     private ExamService productService;
+    @Autowired
     private ExamRepository productRepo;
-//    @GetMapping("/blocks")
-//    public List<AbsentStudent> getStudentsByDateAndBlock(
-//            @RequestParam("selectedDate") String selectedDate,
-//            @RequestParam("blockNumber") Integer blockNumber) {
-//        return productRepo.findByDateAndBlockNo(selectedDate, blockNumber);
-//    }
+
+    @GetMapping("/blocks")
+	public List<Object[]> findBlockByPRN(
+	    @RequestParam("blockNo") long blockNo,
+	    @RequestParam("selectedDate") String selectedDate
+	) {
+	    List<Object[]> userList = new ArrayList<>();
+	    userList = this.productRepo.findBlockByPRN(blockNo);
+	    return userList;
+	}
+
     @PostMapping("/studentdataexam/upload")
     public ResponseEntity<?> upload(
             @RequestParam("File") MultipartFile file, //6
@@ -94,6 +100,27 @@ public class ExcelController {
     public String deleteById(@PathVariable("id") Long id) {
         return this.productService.deleteById(id);
     }
+    @PostMapping("/updateData")
+    public ResponseEntity<String> updateData(
+        @RequestParam("strengthArray") int[] strengthArray,
+        @RequestParam("blockArray") int[] blockArray,
+        @RequestParam("buildingArray") String[] buildingArray) {
+
+        // Handle the received lists here
+        for (int i = 0; i < strengthArray.length; i++) {
+           
+            System.out.println("Received Strength: " + strengthArray[i]);
+            System.out.println("Received Block: " + blockArray[i]);
+            System.out.println("Received Building: " + buildingArray[i]);
+            // Process and save the data as needed
+        }
+
+        // Return a response, e.g., "Data updated successfully"
+        return ResponseEntity.ok("Data updated successfully");
+    }
+
+
+
     @GetMapping("/output")
     public List<ExamSection> output() {
         return this.productService.fetchData();
@@ -133,7 +160,13 @@ public class ExcelController {
     	    @RequestParam("buildings") String[] buildings,
     	    @RequestParam("totalCount") int totalCount
         ) {
-    	System.out.println(blocks[0]);
+    	for(int i=0;i< strengths.length;i++) {
+    		System.out.println("BLOCKS :"+blocks[i]);
+    		System.out.println("STRENGTHS:"+strengths[i]);
+    		System.out.println("buildings:"+buildings[i]);
+    	}
+    	System.out.println(totalCount);
+    	
     	
             return this.productService.setStrengths(blocks,strengths,buildings,totalCount);
 }}
